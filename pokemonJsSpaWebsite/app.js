@@ -170,7 +170,7 @@ const  search = (text)=>{
                 (obj.weight<=weightEn);
         });
     //calling sort Data function to sort according to required sort features by user.
-    //matchedWords = sortData(matchedWords);
+    matchedWords = sortData(matchedWords);
 
     //calling generate Searches function to add the matched objects to searchbox as results 
     generateSearches(matchedWords);
