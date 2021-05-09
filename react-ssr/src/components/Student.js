@@ -1,25 +1,28 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
-export default class Student extends React.PureComponent{
-    
+export default class Student extends Component {
+
     constructor(props){
         super(props);
-
-        this.state = {
-            name: props.name,
-            email: props.email,
-            mobile: props.mobile
-        }
+        this.state={
+            student : props.studentData.student,
+        };
     }
 
+    
+
     render(){
-        console.log(this.state.email,this.state.name, this.state.mobile);
+        console.log("created");
         return (
-        <div id = {this.state.email}>
-            this.state.name
-            this.state.mobile
-            this.state.email
-        </div>);
+            <div >
+                {//props.studentData.student.User_Email
+                    this.state.student.User_Email
+                }
+                {
+                    this.state.student.mobile
+                }
+            </div>
+        );
     }
 
 }
