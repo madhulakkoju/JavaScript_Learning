@@ -34,10 +34,10 @@ function App() {
     <div className="App">
       <div className="Container" style={{display:"flex"}}>
         <div style={{width: "50%"}}>
-          <Students/>
+          <StudentTab/>
         </div>
         <div className="Container" id="studentsDetails" style={{flexGrow:"1" }} >
-         mas
+          Student Profile Data
         </div>
       </div>
     </div>

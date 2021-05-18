@@ -1,0 +1,65 @@
+<html>
+<head>
+
+    <style>
+        [type=radio] { 
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        }
+
+    </style>
+
+</head>
+
+<div id = "tuner" class="container">
+all buttons 
+</div>
+
+<script>
+
+const tuner = document.getElementById("tuner");
+
+arrangeAll();
+
+function arrangeAll(){
+
+    tuner.innerHTML = `
+        <div id="eyes"> </div>
+        <div id = "noses"></div>
+    `;
+    var eyes = document.getElementById("eyes");
+    arrangeEyes(eyes);
+}
+
+function arrangeEyes(eyes){
+    var name = "eyesRadio";
+    arr = []
+    imag = "http://placehold.it/40x60/0bf/fff&text=A";
+    
+    for(var i=0;i<10;i++){
+        arr.push(
+        {    
+            name : "dfgdfjg",
+            val : i,
+            img : imag
+        });
+        
+    }
+
+
+    eyes.innerHTML =  arr.map( (value) => { 
+        return  `
+        <label>
+        <input type="radio"  name= ${name} value = ${value.val}>
+        <img src = ${value.img} >
+        </label>`
+    } ).join('');
+}
+
+
+
+
+</script>
+</html>

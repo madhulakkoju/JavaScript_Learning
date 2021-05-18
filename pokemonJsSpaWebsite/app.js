@@ -135,6 +135,7 @@ const onPage = (pk)=>{
 
 // Search Logic -> called from eventListener in searchBar
 const  search = (text)=>{
+
     if( text.replaceAll(' ','').length ==0  &&
         filterHeightEnd.value.replaceAll(' ','').length ==0 &&
         filterHeightStart.value.replaceAll(' ','').length ==0 &&

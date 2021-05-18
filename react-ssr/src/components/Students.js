@@ -4,8 +4,6 @@ import Student from './Student';
 import ReactDOM from 'react-dom';
 
 
-
-
 const Students = () => {
     const [studentsData,setStudents] = useState({
         students:[]
@@ -23,7 +21,8 @@ const Students = () => {
     },[]);
     
     return ( 
-        <div>
+
+        <div id="allStudents" className="scroll" style={{scrollBehavior:'smooth',overflow:'scroll',whiteSpace:'nowrap',height:window.innerHeight}} >
             <h3>ALL STUDENTS</h3>
             <table>
                 <thead>
@@ -32,12 +31,6 @@ const Students = () => {
                     <td>First Name</td>
                     <td>Last Name</td>
                     <td>Student Email</td>
-                    <td>Student Mobile</td>
-                    <td>Department</td>
-                    <td>Date of Birth</td>
-                    <td>Admission Date</td>
-                    <td>Score</td>
-                    <td>Fee</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -55,22 +48,12 @@ const Students = () => {
                                 <td>{student.first_name}</td>
                                 <td>{student.last_name}</td>
                                 <td>{student.User_Email}</td>
-                                <td>{student.mobile}</td>
-                                <td>{student.department}</td>
-                                <td>{(new Date(student.date_birth)).toDateString() }</td>
-
-                                <td>{(new Date(student.date_admission)).toDateString() }</td>
-                                <td>{student.score_gpa}</td>
-                                <td>{student.fee_Amount}</td>
-                                
-                                <td> </td>
                             </tr>
                         )
                     })
                 }
                 </tbody>
             </table>
-
         </div>
      );  
 }

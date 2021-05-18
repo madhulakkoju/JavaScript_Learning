@@ -1,0 +1,176 @@
+<html>
+<script type="text/javascript" >
+
+var currentUser = null;
+var currentToken = null;
+var sessionOnline = false;
+
+async function signUp(userEmail, userPassword){
+    if(currentToken != null){
+        console.log("Already Logged In... Logout and then signUp");
+        return;
+    }
+    let response = await fetch("https://rbds-attendance.herokuapp.com/user/signup", {
+        // Adding method type
+        method: "POST",
+        // Adding body or contents to send
+        body: JSON.stringify({
+            email: userEmail,
+            password: userPassword
+        }),
+        // Adding headers to the request
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+    // Converting to JSON
+    .then(response => response.json());
+    
+    console.log(response);
+    if(response.message == "Mail exists"){
+        console.log("Already existing user... Login Directly");
+        document.getElementById("errPage").innerHTML = "Already existing user... Login Directly";
+    }
+
+}
+
+async function login(userEmail, userPassword){
+    if(currentToken != null){
+        console.log("Already Logged In.. To try again, Logout and login with other email");
+        return ;
+    }
+    let response = await fetch("https://rbds-attendance.herokuapp.com/user/login", {
+        // Adding method type
+        method: "POST",
+        // Adding body or contents to send
+        body: JSON.stringify({
+            email: userEmail,
+            password: userPassword
+        }),
+        // Adding headers to the request
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+    // Converting to JSON
+    .then(response => response.json());
+    
+    console.log(response);
+    currentUser = userEmail;
+    currentToken = response.token;
+    console.log(currentToken);
+
+    if(response.token != null){
+        alterPageToHome();
+    }
+    else{
+        document.getElementById("errPage").innerHTML = "Wrong username password";
+    }
+
+}
+
+async function startSession(){
+    if(sessionOnline==true){
+        console.log("Already Started .. A session is online.. cannot start another");
+        return ;
+    }
+    if(currentToken== null){
+        console.log("Unable to Start session .. Not Logged In");
+        return;
+    }
+    let response = await  fetch("https://rbds-attendance.herokuapp.com/attendance/startSession", {
+        // Adding method type
+        method: "POST",
+        // Adding headers to the request
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": "Bearer "+currentToken
+        }
+    });
+    console.log(response.status);
+    console.log(response.statusText);//200
+    if(response.status==200){
+        console.log("SESSION started");
+        sessionOnline = true;
+        document.getElementById("errPage").innerHTML ="Session Started";
+    }
+}
+
+async function endSession(){
+    if(sessionOnline == false){
+        console.log("Inactive Session.. start a session first");
+        return;
+    }
+    if(currentToken== null){
+        console.log("Unable to End session .. Not Logged In");
+        return;
+    }
+    let response = await fetch("https://rbds-attendance.herokuapp.com/attendance/endSession", {
+        // Adding method type
+        method: "POST",
+        // Adding headers to the request
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": `Bearer ${currentToken}`
+        }
+    });
+
+    console.log(response.status);
+    console.log(response.statusText);
+    if(response.status==200){
+        console.log("SESSION ended");
+        sessionOnline = false;
+        document.getElementById("errPage").innerHTML ="Session Ended";
+    }
+}
+
+function logout(){
+    currentToken=null;
+    currentUser=null;
+    alterPageToSign();
+}
+
+var signPage = null;
+
+function alterPageToSign(){
+    document.getElementById("signPage").innerHTML = signPage;
+}
+
+function alterPageToHome(){
+    signPage = document.getElementById("signPage").innerHTML;
+    document.getElementById("signPage").innerHTML = `
+        
+        <button onclick="startSession()"> start session </button>
+
+        <button onclick="endSession()"> end session </button>
+
+        <button onclick="logout()"> logout </button>
+    `;
+}
+
+function signUpWrap(){
+    signUp(document.getElementById("email").value, document.getElementById("pass").value);
+}
+
+function signInWrap(){
+    login(document.getElementById("email").value, document.getElementById("pass").value);
+
+}
+
+</script>
+
+<div id = "signPage">
+    Email : <input type="text" id = "email">
+    <br>
+    Password : <input type="text" id = "pass">
+    <br>
+    <button onclick="signUpWrap()">signUp</button>
+    <button onclick="signInWrap()">signIn</button>
+
+</div>
+
+<div id = "errPage">
+
+</div>
+
+</html>
